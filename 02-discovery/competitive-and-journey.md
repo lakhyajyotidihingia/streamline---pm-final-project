@@ -1,17 +1,14 @@
-# Competitive Analysis & Journey Map
+# Competitive Analysis & Journey Map (Module 2)
 
-> Module 2 · Discover Product Opportunities via Qualitative Signals — ★ Deliverable 2
->
-> _You'll complete this during Module 2._
-
-## Workaround summary
-
-_How do users solve this problem today, because the existing tools don't meet their needs?_
-
-_____
-
-## High-level journey map
-
-_The step-by-step experience of your proposed solution, showing how it removes current friction._
-
-_[screenshot or link to your journey map — make sure it's shareable]_
+## Responses
+- **Role, who are you solving for? (the specific user segment or profile):** A film-literate, engaged long-time user who watches deliberately rather than passively.
+- **Goal, what is this user ultimately trying to achieve?:** Find titles that reflect their actual, nuanced taste — not just their most recent click.
+- **Friction, the main barrier (moment of misery) stopping them from succeeding:** After watching a single action film, the "Because you watched" row recommended three more near-duplicate action sequels — prompting the reaction "I'm not a genre, I'm a person." This is corroborated by BUG-1091 (High severity): the recommendation engine surfaces same-franchise, low-diversity titles rather than genuinely tailored ones. The moment of misery is being reduced to a single data point by a system that mistakes repetition for personalisation.
+- **External tools, the outside platforms or tools the user is forced to use:** The user replaced the product with a competitor's curation service, and then cancelled the subscription entirely
+- **The process, the 3 to 5 manual steps the user takes to get the job done:** Disregard the algorithmic surface entirely. The user learns to treat "Because you watched" and similar rows as noise rather than signal, since repeated exposure to same-franchise, low-diversity picks (BUG-1091) teaches them the row isn't worth engaging with.
+Attempt manual, exact-match search as a substitute for curation. Lacking a "surprise me intelligently" function, the user tries to manually hunt using specific known titles, directors, or descriptive terms — but the search function only supports exact-title matching (BUG-1080), so this frequently fails (Lucia's "typed 'slow quiet French drama' and got a Fast & Furious film").
+Outsource curation to a trusted external source. When the platform's own system can't deliver a nuanced match, the user turns to a substitute human filter — a competitor's hand-picked email service or a trusted friend's recommendation — rather than the platform's algorithm (Tom: a competitor "emails me two hand-picked films a week and I watch both"; Sam: trusts a friend's recommendation over the algorithm).
+Fall back to known-safe rewatching as a last resort. When even that effort feels like too much, the user defaults to re-consuming already-known content rather than risk the friction of discovery again (Aisha: re-watching "the same four comfort shows" because discovery "feels like a chore.")
+- **Core frustration, the exact moment the process feels most “broken”:** The size of the catalog becomes a liability rather than an asset — more titles, but no reliable path to the right title, so the user does more work to get less value. This frustrates the user.
+- **The evidence, a specific quote or behavior from the research that proves this:** The catalog scaled, but curation didn't — and users are now solving that gap either by paying a competitor to do it, or by quietly disengaging from the product's core value proposition.
+- **📎 Your journey map, a shareable link, or the map file you committed (e.g. journey-map.html):** https://github.com/lakhyajyotidihingia/streamline---pm-final-project/blob/main/02-discovery/journey-map.png
