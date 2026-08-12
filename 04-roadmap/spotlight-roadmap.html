@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StreamLine Spotlight — Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0c0f;
+    --bg-vignette: #050607;
+    --card: #14171d;
+    --card-border: #23272f;
+    --ink: #f1efe7;
+    --ink-dim: #8d929c;
+    --ink-faint: #565b64;
+    --gold: #e8b34a;
+    --gold-dim: #4a3d20;
+    --teal: #4aa8a0;
+    --qwin: #5fbf7a;
+    --major: #e8b34a;
+    --fillin: #6b93b0;
+    --sinker: #c15c5c;
+    --film-hole: #05060766;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(600px circle at var(--mx,50%) var(--my,20%), rgba(232,179,74,0.10), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    min-height:100vh;
+    position:relative;
+    overflow-x:hidden;
+  }
+
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    background:
+      radial-gradient(1000px circle at var(--mx,50%) var(--my,10%), rgba(232,179,74,0.06), transparent 60%),
+      radial-gradient(ellipse at center, transparent 40%, var(--bg-vignette) 130%);
+    transition: background 0.05s linear;
+  }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    max-width:1280px;
+    margin:0 auto;
+    padding:56px 28px 90px;
+  }
+
+  /* ---- Header / marquee ---- */
+  header{
+    text-align:center;
+    margin-bottom:8px;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    font-size:11px;
+    color:var(--teal);
+    margin-bottom:14px;
+  }
+  h1{
+    font-family:'Bebas Neue', sans-serif;
+    font-weight:400;
+    font-size:clamp(48px, 9vw, 96px);
+    letter-spacing:0.03em;
+    margin:0;
+    line-height:0.92;
+    background:linear-gradient(180deg, #fff8e6 0%, var(--gold) 55%, #b9822a 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:0 0 60px rgba(232,179,74,0.25);
+  }
+  .subhead{
+    color:var(--ink-dim);
+    font-size:15px;
+    max-width:560px;
+    margin:18px auto 0;
+    line-height:1.6;
+  }
+  .subhead b{ color:var(--ink); font-weight:600; }
+
+  .meta-strip{
+    display:flex;
+    justify-content:center;
+    gap:28px;
+    flex-wrap:wrap;
+    margin:28px 0 0;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--ink-faint);
+  }
+  .meta-strip span b{ color:var(--ink-dim); font-weight:500; }
+
+  /* film perforation divider */
+  .sprocket{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    margin:44px 0 40px;
+    opacity:0.5;
+  }
+  .sprocket i{
+    width:7px; height:7px; border-radius:1px;
+    background:var(--ink-faint);
+    display:block;
+  }
+
+  /* ---- Legend ---- */
+  .legend{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:52px;
+  }
+  .legend button{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    background:var(--card);
+    border:1px solid var(--card-border);
+    color:var(--ink-dim);
+    padding:7px 14px 7px 11px;
+    border-radius:20px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    transition:all .18s ease;
+  }
+  .legend button:hover{ border-color:var(--ink-faint); color:var(--ink); }
+  .legend button.active{ background:#1c2027; border-color:var(--ink-dim); color:var(--ink); }
+  .legend .dot{ width:8px; height:8px; border-radius:50%; flex:none; }
+
+  /* ---- Lanes ---- */
+  .lanes{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:22px;
+    align-items:start;
+  }
+  @media (max-width: 900px){
+    .lanes{ grid-template-columns:1fr; }
+  }
+
+  .lane{
+    background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent 120px);
+    border:1px solid var(--card-border);
+    border-radius:14px;
+    padding:20px 18px 26px;
+    position:relative;
+  }
+  .lane.now{
+    border-color:rgba(232,179,74,0.35);
+    box-shadow:0 0 0 1px rgba(232,179,74,0.08), 0 30px 60px -30px rgba(232,179,74,0.15);
+  }
+  .lane-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:6px;
+  }
+  .lane-title{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:30px;
+    letter-spacing:0.04em;
+  }
+  .lane.now .lane-title{ color:var(--gold); }
+  .lane.next .lane-title{ color:var(--teal); }
+  .lane.later .lane-title{ color:var(--ink-dim); }
+  .lane-count{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--ink-faint);
+  }
+  .lane-sub{
+    font-size:12px;
+    color:var(--ink-faint);
+    margin-bottom:20px;
+    line-height:1.5;
+  }
+
+  /* ---- Cards ---- */
+  .card{
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:10px;
+    padding:16px 16px 15px;
+    margin-bottom:12px;
+    transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:var(--card-accent, var(--ink-faint));
+  }
+  .card:hover{
+    transform:translateY(-3px);
+    border-color:#333944;
+    box-shadow:0 14px 30px -14px rgba(0,0,0,0.6);
+  }
+  .card.dimmed{ opacity:0.25; filter:saturate(0.4); }
+
+  .card-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:9px;
+  }
+  .card-id{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--ink-faint);
+    letter-spacing:0.05em;
+  }
+  .card-name{
+    font-weight:600;
+    font-size:14.5px;
+    color:var(--ink);
+    line-height:1.3;
+    margin-top:2px;
+  }
+  .badge{
+    flex:none;
+    font-family:'JetBrains Mono', monospace;
+    font-size:9.5px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    padding:4px 8px;
+    border-radius:20px;
+    white-space:nowrap;
+    border:1px solid transparent;
+  }
+  .badge.qwin{ background:rgba(95,191,122,0.12); color:var(--qwin); border-color:rgba(95,191,122,0.3); }
+  .badge.major{ background:rgba(232,179,74,0.12); color:var(--major); border-color:rgba(232,179,74,0.3); }
+  .badge.fillin{ background:rgba(107,147,176,0.12); color:var(--fillin); border-color:rgba(107,147,176,0.3); }
+  .badge.sinker{ background:rgba(193,92,92,0.12); color:var(--sinker); border-color:rgba(193,92,92,0.3); }
+
+  .card-rationale{
+    font-size:12.5px;
+    line-height:1.55;
+    color:var(--ink-dim);
+  }
+
+  /* ---- Cut List ---- */
+  .cutlist{
+    margin-top:74px;
+  }
+  .cutlist-head{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:6px;
+  }
+  .cutlist-head h2{
+    font-family:'Bebas Neue', sans-serif;
+    font-weight:400;
+    font-size:26px;
+    letter-spacing:0.05em;
+    color:var(--ink-faint);
+    margin:0;
+  }
+  .cutlist-line{
+    flex:1;
+    height:1px;
+    background:repeating-linear-gradient(90deg, var(--card-border) 0 6px, transparent 6px 11px);
+  }
+  .cutlist-sub{
+    font-size:12px;
+    color:var(--ink-faint);
+    margin-bottom:24px;
+  }
+  .cut-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+    gap:12px;
+  }
+  .cut-card{
+    background:transparent;
+    border:1px dashed var(--card-border);
+    border-radius:10px;
+    padding:14px 15px;
+    opacity:0.72;
+    transition:opacity .18s ease, border-color .18s ease;
+  }
+  .cut-card:hover{ opacity:1; border-color:var(--ink-faint); }
+  .cut-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:8px;
+    margin-bottom:8px;
+  }
+  .cut-name{
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink-dim);
+    text-decoration:line-through;
+    text-decoration-color:var(--ink-faint);
+    text-decoration-thickness:1px;
+  }
+  .cut-rationale{
+    font-size:11.5px;
+    line-height:1.5;
+    color:var(--ink-faint);
+  }
+
+  footer{
+    text-align:center;
+    margin-top:80px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--ink-faint);
+    letter-spacing:0.05em;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">StreamLine · Product Roadmap</div>
+    <h1>SPOTLIGHT</h1>
+    <p class="subhead">Fixing <b>BUG-1091</b> — the moment a film-literate user stops trusting the algorithm.
+      "I'm not a genre, I'm a person."</p>
+    <div class="meta-strip">
+      <span><b>Team</b> 2 engineers · 1 designer</span>
+      <span><b>Sprint</b> 3 weeks</span>
+      <span><b>Primary metric</b> Sessions / wk, existing content mix</span>
+      <span><b>Guardrail</b> Search → played</span>
+    </div>
+  </header>
+
+  <div class="sprocket">
+    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+  </div>
+
+  <div class="legend" id="legend">
+    <button data-filter="all" class="active"><span class="dot" style="background:var(--ink-dim)"></span>All</button>
+    <button data-filter="qwin"><span class="dot" style="background:var(--qwin)"></span>Quick Win</button>
+    <button data-filter="major"><span class="dot" style="background:var(--major)"></span>Major Project</button>
+    <button data-filter="fillin"><span class="dot" style="background:var(--fillin)"></span>Fill-In</button>
+    <button data-filter="sinker"><span class="dot" style="background:var(--sinker)"></span>Time Sinker</button>
+  </div>
+
+  <div class="lanes">
+
+    <!-- NOW -->
+    <div class="lane now">
+      <div class="lane-head">
+        <span class="lane-title">Now</span>
+        <span class="lane-count">3-WEEK SPRINT</span>
+      </div>
+      <div class="lane-sub">Ships this sprint. Direct hits on the diversity failure, no ML required.</div>
+
+      <div class="card" data-q="qwin" style="--card-accent:var(--qwin)">
+        <div class="card-top">
+          <div>
+            <div class="card-id">A1</div>
+            <div class="card-name">Spotlight Curated Rail</div>
+          </div>
+          <span class="badge qwin">Quick Win</span>
+        </div>
+        <div class="card-rationale">Bypasses the broken engine entirely — direct antidote to BUG-1091, ships fast with editorial ops, no ML needed.</div>
+      </div>
+
+      <div class="card" data-q="qwin" style="--card-accent:var(--qwin)">
+        <div class="card-top">
+          <div>
+            <div class="card-id">A3</div>
+            <div class="card-name">Hidden Gem Badge</div>
+          </div>
+          <span class="badge qwin">Quick Win</span>
+        </div>
+        <div class="card-rationale">Cheap query + badge that actively counters same-franchise clustering — this is the diversity fix in miniature.</div>
+      </div>
+
+      <div class="card" data-q="qwin" style="--card-accent:var(--qwin)">
+        <div class="card-top">
+          <div>
+            <div class="card-id">A9</div>
+            <div class="card-name">Advanced Filter Engine</div>
+          </div>
+          <span class="badge qwin">Quick Win</span>
+        </div>
+        <div class="card-rationale">Hands the film-literate user the wheel to self-diversify away from algorithmic bias; filter → play maps straight onto the guardrail.</div>
+      </div>
+    </div>
+
+    <!-- NEXT -->
+    <div class="lane next">
+      <div class="lane-head">
+        <span class="lane-title">Next</span>
+        <span class="lane-count">SPRINTS 2–3</span>
+      </div>
+      <div class="lane-sub">Root-cause fix. Scoped properly instead of rushed.</div>
+
+      <div class="card" data-q="major" style="--card-accent:var(--major)">
+        <div class="card-top">
+          <div>
+            <div class="card-id">A5</div>
+            <div class="card-name">Personalized Spotlight Queue</div>
+          </div>
+          <span class="badge major">Major Project</span>
+        </div>
+        <div class="card-rationale">The real, root-cause fix to BUG-1091 — highest value, but a genuine diversity-aware rec model is not a 3-week build. Scope as multi-sprint, don't fake it this cycle.</div>
+      </div>
+    </div>
+
+    <!-- LATER -->
+    <div class="lane later">
+      <div class="lane-head">
+        <span class="lane-title">Later</span>
+        <span class="lane-count">BACKLOG</span>
+      </div>
+      <div class="lane-sub">Revisit once the underlying rec list is actually trustworthy.</div>
+
+      <div class="card" data-q="fillin" style="--card-accent:var(--fillin)">
+        <div class="card-top">
+          <div>
+            <div class="card-id">A2</div>
+            <div class="card-name">'Why You'll Love This' Label</div>
+          </div>
+          <span class="badge fillin">Fill-In</span>
+        </div>
+        <div class="card-rationale">Puts lipstick on the same low-diversity list rather than fixing it — risks justifying the repetition the user is angry about.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CUT LIST -->
+  <div class="cutlist">
+    <div class="cutlist-head">
+      <h2>Cut List</h2>
+      <div class="cutlist-line"></div>
+    </div>
+    <div class="cutlist-sub">Sales/Engineering-flavored scope creep. None of it touches the misery moment — cut, not deferred.</div>
+
+    <div class="cut-grid">
+      <div class="cut-card" data-q="sinker">
+        <div class="cut-top">
+          <span class="cut-name">A4 · Mood-Based Entry Point</span>
+          <span class="badge sinker">Sinker</span>
+        </div>
+        <div class="cut-rationale">Tagging the whole catalog by mood in 3 weeks with 2 engineers is unrealistic, and an extra login step adds friction for a deliberate watcher, not relief.</div>
+      </div>
+
+      <div class="cut-card" data-q="fillin">
+        <div class="cut-top">
+          <span class="cut-name">A6 · Spotlight Digest Email</span>
+          <span class="badge fillin">Fill-In</span>
+        </div>
+        <div class="cut-rationale">Off-platform, doesn't move sessions/wk, and if it pulls from the same engine it just emails the user their misery weekly.</div>
+      </div>
+
+      <div class="cut-card" data-q="sinker">
+        <div class="cut-top">
+          <span class="cut-name">A7 · Curator Profiles</span>
+          <span class="badge sinker">Sinker</span>
+        </div>
+        <div class="cut-rationale">Persona-aligned in theory, but CMS + follow graph is too much scope for the payoff this sprint.</div>
+      </div>
+
+      <div class="cut-card" data-q="sinker">
+        <div class="cut-top">
+          <span class="cut-name">A8 · Watch Party (Spotlight)</span>
+          <span class="badge sinker">Sinker</span>
+        </div>
+        <div class="cut-rationale">Solves nothing in the anchors — solo deliberate watcher isn't asking for sync-viewing, and it does zero for diversity or the guardrail.</div>
+      </div>
+
+      <div class="cut-card" data-q="sinker">
+        <div class="cut-top">
+          <span class="cut-name">A10 · Offline Download (Spotlight)</span>
+          <span class="badge sinker">Sinker</span>
+        </div>
+        <div class="cut-rationale">DRM/download infra is a real engineering project chasing a problem the user never raised — pure distraction from the misery moment.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>STREAMLINE · SPOTLIGHT INITIATIVE · PRODUCT ROADMAP</footer>
+
+</div>
+
+<script>
+  // Cursor-follow spotlight glow — literal to the product name
+  window.addEventListener('mousemove', (e) => {
+    document.body.style.setProperty('--mx', e.clientX + 'px');
+    document.body.style.setProperty('--my', e.clientY + 'px');
+  });
+
+  // Legend filter
+  const buttons = document.querySelectorAll('.legend button');
+  const cards = document.querySelectorAll('[data-q]');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      cards.forEach(card => {
+        if (filter === 'all' || card.dataset.q === filter) {
+          card.classList.remove('dimmed');
+        } else {
+          card.classList.add('dimmed');
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
